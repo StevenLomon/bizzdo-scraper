@@ -1,5 +1,6 @@
 import requests, re, time, json
 from rich import print
+from bs4 import BeautifulSoup
 
 user_url = "https://bizzdo.se/sok/avancerad?q=%7B%22filter%22%3A%5B%7B%22companyTrade%22%3A%7B%22type%22%3A%22enum%22%2C%22values%22%3A%5B68310%5D%2C%22includeNoValue%22%3Afalse%7D%7D%5D%7D"
 keyword = re.search(r'values%22%3A%5B(.*?)%', user_url).group(1)
@@ -86,7 +87,15 @@ def get_n_results(keyword, max_retries=3, delay=1):
         
         time.sleep(delay)
 
-results = get_n_results(keyword)
-print(type(results))
-print(len(results))
+# results = get_n_results(keyword)
+# print(type(results))
+# print(len(results))
     
+url = "https://bizzdo.se/foretag/5567405666/Catella-Corporate-Finance-Malm%C3%B6-AB"
+response = requests.get(url)
+html_content = response.text
+print(html_content)
+soup = BeautifulSoup(html_content, 'html.parser')
+span_elements = soup.find_all('span', class_='CardBody__figure')
+
+print(span_elements)
